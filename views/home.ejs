@@ -2,61 +2,183 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-  <title>User Home</title>
+  <title>इवेंट सूची</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- AOS Animation -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 
   <style>
     body {
-      background: #f8f9fa;
+      background: #0d1117;
+      color: #e6edf3;
       font-family: 'Segoe UI', sans-serif;
-      padding-top: 30px;
+      padding-top: 80px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-    .card {
+
+    /* Navbar */
+    .navbar-dark {
+      background: linear-gradient(90deg, #141e30, #243b55);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+    }
+    .navbar-brand {
+      font-weight: 700;
+      color: #f1c40f !important;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(241, 196, 15, 0.7);
+    }
+
+    /* Table Container */
+    .table-container {
+      flex: 1;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      background-color: #fff;
+      animation: fadeIn 1s ease-in-out;
     }
-    a.btn-action {
-      margin-right: 5px;
+
+    /* Table */
+    .table-dark-custom {
+      background: #161b22;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+    }
+    .table-dark-custom thead th {
+      background: #1f2937;
+      color: #f1c40f;
+      text-transform: uppercase;
       font-size: 0.9rem;
+      padding: 14px;
+    }
+    .table-dark-custom tbody td {
+      padding: 12px;
+    }
+    .table-dark-custom tbody tr {
+      transition: all 0.3s ease;
+    }
+    .table-dark-custom tbody tr:hover {
+      background: rgba(241, 196, 15, 0.1);
+      transform: scale(1.01);
+    }
+
+    /* Buttons */
+    .btn-custom {
+      border-radius: 30px;
+      font-size: 0.85rem;
+      padding: 6px 16px;
+      font-weight: 600;
+      border: none;
+      transition: all 0.3s ease;
+    }
+    .btn-details {
+      background: linear-gradient(135deg, #2980b9, #3498db);
+      color: #fff;
+      box-shadow: 0 0 8px rgba(52,152,219,0.4);
+    }
+    .btn-details:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 15px rgba(52,152,219,0.8);
+    }
+    .btn-update {
+      background: linear-gradient(135deg, #d35400, #e67e22);
+      color: #fff;
+      box-shadow: 0 0 8px rgba(230,126,34,0.4);
+    }
+    .btn-update:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 15px rgba(230,126,34,0.8);
+    }
+
+    /* Footer */
+    footer {
+      background: #161b22;
+      color: #aaa;
+      text-align: center;
+      padding: 18px 0;
+      font-size: 0.9rem;
+      margin-top: auto;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    footer a {
+      color: #f1c40f;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .table-dark-custom { font-size: 0.85rem; }
+      .navbar-brand { font-size: 1rem; }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="card">
-      <h2 class="text-center mb-4">Event List for (User)</h2>
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-          <thead class="table-light">
-            <tr>
-              <th>S. No.</th>
-              <th>Event Name</th>
-              <th>Action</th>
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">📅 इवेंट सूची (यूज़र)</a>
+    </div>
+  </nav>
+
+  <!-- Table Section -->
+  <div class="container table-container">
+    <div class="table-responsive">
+      <table class="table table-dark-custom align-middle text-center">
+        <thead>
+          <tr data-aos="fade-down">
+            <th>क्र.सं.</th>
+            <th>कार्यक्रम का नाम</th>
+            <th>विवरण</th>
+            <th>अपडेट</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% events.forEach((event, index) => { %>
+            <tr data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+              <td><%= index + 1 %></td>
+              <td><%= event.name %></td>
+              <td>
+                <a href="/events/details/<%= event.id %>" class="btn btn-custom btn-details">विवरण देखें</a>
+              </td>
+              <td>
+                <a href="/events/update/user/<%= event.id %>" class="btn btn-custom btn-update">अपडेट करें</a>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            <% events.forEach((event, index) => { %>
-              <tr>
-                <td><%= index + 1 %></td>
-                <td>
-                  <a href="/events/details/<%= event.id %>"><%= event.name %></a>
-                </td>
-                <td>
-                  <a href="/events/details/<%= event.id %>" class="btn btn-sm btn-info btn-action">Show Details</a>
-                  <a href="/events/update/<%= event.id %>" class="btn btn-sm btn-warning btn-action">Update</a>
-                </td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      </div>
+          <% }) %>
+        </tbody>
+      </table>
     </div>
   </div>
 
+  <!-- Footer -->
+  <footer data-aos="fade-up">
+    <p>© 2025 आपका संगठन | सभी अधिकार सुरक्षित</p>
+    <p><a href="#">हमारे बारे में</a> | <a href="#">संपर्क करें</a></p>
+  </footer>
+
+  <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 900,
+      once: true
+    });
+  </script>
 </body>
 </html>

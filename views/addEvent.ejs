@@ -2,96 +2,172 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-  <title>Add New Event</title>
+  <title>नया कार्यक्रम जोड़ें</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 
   <style>
     body {
-      background: #f8f9fa;
+      background: #121416;
       font-family: 'Segoe UI', sans-serif;
-      padding: 30px;
+      color: #e0e0e0;
+      padding: 60px 15px 20px 15px;
     }
 
     .card {
       max-width: 700px;
       margin: auto;
       padding: 25px;
-      border-radius: 12px;
-      background-color: #fff;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      border-radius: 20px;
+      background: #1e2126;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-3px);
     }
 
-    .card h2 {
+    h2 {
       text-align: center;
       margin-bottom: 25px;
-      color: #343a40;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #ffd700;
     }
 
     .form-label {
       font-weight: 500;
+      color: #e0e0e0;
+    }
+
+    .form-control, .form-select, textarea {
+      background: #2c2f33;
+      border: 1px solid #444851;
+      color: #e0e0e0;
+    }
+    .form-control:focus, .form-select:focus, textarea:focus {
+      border-color: #00aaff;
+      box-shadow: 0 0 6px rgba(0,170,255,0.5);
+      background: #383c44;
+      color: #ffffff;
     }
 
     .btn-submit {
       display: block;
       width: 100%;
+      padding: 12px 0;
+      font-weight: 600;
+      border-radius: 50px;
+      border: none;
       margin-top: 15px;
+      background: linear-gradient(135deg, #4CAF50, #81C784);
+      color: #fff;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+    .btn-submit:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 12px rgba(76,175,80,0.6);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #757575, #9e9e9e);
+      border: none;
+      color: #fff;
+    }
+    .btn-secondary:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 12px rgba(158,158,158,0.6);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .card {
+        padding: 20px;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+      .btn-submit {
+        font-size: 0.95rem;
+        padding: 10px 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 1.3rem;
+      }
+      .btn-submit {
+        font-size: 0.9rem;
+        padding: 10px 0;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    <h2>Add New Event</h2>
+  <div class="card" data-aos="fade-up">
+    <h2>नया कार्यक्रम जोड़ें</h2>
 
     <form method="post" action="/events/add">
       <div class="mb-3">
-        <label class="form-label">Event Name:</label>
+        <label class="form-label">कार्यक्रम का नाम:</label>
         <input type="text" name="name" class="form-control" required>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Description:</label>
+        <label class="form-label">विवरण:</label>
         <textarea name="description" class="form-control" rows="3" required></textarea>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Start Date/Time:</label>
+        <label class="form-label">शुरुआत दिनांक / समय:</label>
         <input type="datetime-local" name="start_date" class="form-control" required>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">End Date/Time:</label>
+        <label class="form-label">समाप्ति दिनांक / समय:</label>
         <input type="datetime-local" name="end_date" class="form-control" required>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Issue Date:</label>
+        <label class="form-label">जारी होने की तारीख:</label>
         <input type="date" name="issue_date" class="form-control" required>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Location:</label>
+        <label class="form-label">स्थान:</label>
         <input type="text" name="location" class="form-control" required>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Event Type:</label>
-        <select name="event_type" class="form-select">
-          <option value="Dhrana">Dhrana</option>
-          <option value="Meeting">Meeting</option>
-          <option value="Band">Band</option>
-          <option value="Raily">Raily</option>
-          <option value="Sabha">Sabha</option>
-          <option value="Gayapan">Gayapan</option>
+        <label class="form-label">कार्यक्रम प्रकार:</label>
+        <select name="event_type" class="form-select" required>
+          <option value="धरना">धरना</option>
+          <option value="बैठक">बैठक</option>
+          <option value="बंद">बंद</option>
+          <option value="रैली">रैली</option>
+          <option value="सभा">सभा</option>
+          <option value="गायन">गायन</option>
         </select>
       </div>
 
-      <button type="submit" class="btn btn-primary btn-submit">Add Event</button>
-      <a href="/events/admin" class="btn btn-secondary btn-submit mt-2">🔙 Back to Admin Panel</a>
+      <button type="submit" class="btn btn-submit">कार्यक्रम जोड़ें</button>
+      <a href="/events/admin" class="btn btn-secondary btn-submit mt-2">🔙 वापस एडमिन पैनल</a>
     </form>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 900,
+      easing: 'ease-in-out',
+      once: false
+    });
+  </script>
 </body>
 </html>

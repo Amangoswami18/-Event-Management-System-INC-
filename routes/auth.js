@@ -9,30 +9,29 @@ router.get("/", (req, res) => {
 
 // ---------------- LOGIN POST ----------------
 router.post("/login", (req, res) => {
-  const { username, code } = req.body;
+  const { code } = req.body;
 
-  // username and pass both should be match 
-  db.query(
-    "SELECT * FROM users WHERE username = ? AND code = ?",
-    [username, code],
-    (err, result) => {
-      if (err) return res.send("❌ Database error");
+  // code sirf 4 digit ka hona chahiye
+  if (!/^\d{4}$/.test(code)) {
+    return res.render("Mistake.ejs"); 
+  }
 
-      if (result.length > 0) {
-        const user = result[0];
+  // ab DB me sirf code check karenge
+  db.query("SELECT * FROM users WHERE code = ?", [code], (err, result) => {
+    if (err) return res.send("❌ Database error");
 
-        // Role check
-        if (user.role === "admin") {
-          res.redirect("/events/admin");
-        } else {
-          res.redirect("/events/home");
-        }
+    if (result.length > 0) {
+      const user = result[0];
+
+      if (user.role === "admin") {
+        res.redirect("/events/admin");
       } else {
-        // false username ya password hua toh
-        res.render("Mistake.ejs");
+        res.redirect("/events/home");
       }
+    } else {
+      res.render("Mistake.ejs"); // code galat hua toh
     }
-  );
+  });
 });
 
 module.exports = router;
